@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume — Saumay Raj</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #6c63ff;
+      --accent: #f43f5e;
+      --cyan: #06b6d4;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --dim: #64748b;
+      --gradient: linear-gradient(135deg, #6c63ff, #f43f5e, #06b6d4);
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    /* ── Print Styles ── */
+    @media print {
+      body {
+        background: #fff;
+        color: #111;
+        padding: 0;
+      }
+      .resume { box-shadow: none; border: none; max-width: 100%; }
+      .no-print { display: none !important; }
+      .section-title { color: #6c63ff; }
+      .tag { background: #e8e6ff; color: #6c63ff; border-color: #c4bfff; }
+      .timeline-dot { background: #6c63ff; }
+      .divider { border-color: #e2e8f0; }
+      a { color: #6c63ff; }
+      .header { background: linear-gradient(135deg, #6c63ff, #f43f5e) !important; }
+      .header * { color: #fff !important; }
+    }
+
+    /* ── Controls ── */
+    .controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .ctrl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: 50px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    .ctrl-btn.primary {
+      background: var(--gradient);
+      color: #fff;
+    }
+    .ctrl-btn.primary:hover {
+      box-shadow: 0 4px 20px rgba(108,99,255,0.5);
+      transform: translateY(-2px);
+    }
+    .ctrl-btn.secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .ctrl-btn.secondary:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* ── Resume Container ── */
+    .resume {
+      width: 100%;
+      max-width: 800px;
+      background: var(--card);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 80px rgba(0,0,0,0.4);
+    }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(135deg, rgba(108,99,255,0.2), rgba(244,63,94,0.15), rgba(6,182,212,0.1));
+      padding: 3rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%; right: -50%;
+      width: 100%; height: 200%;
+      background: radial-gradient(circle, rgba(108,99,255,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .header-photo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid rgba(108,99,255,0.5);
+      object-fit: cover;
+      flex-shrink: 0;
+      background: rgba(108,99,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: var(--primary);
+      overflow: hidden;
+    }
+    .header-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .header-info { flex: 1; }
+    .header-name {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.3rem;
+    }
+    .header-name span {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .header-role {
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .header-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+    .header-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .header-link:hover { color: var(--primary); }
+    .header-link i { color: var(--primary); font-size: 0.85rem; }
+
+    /* ── Body ── */
+    .resume-body { padding: 2.5rem; }
+
+    .section { margin-bottom: 2rem; }
+    .section:last-child { margin-bottom: 0; }
+
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-title i { font-size: 0.9rem; }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--border), transparent);
+      margin-left: 0.5rem;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+
+    /* ── Summary ── */
+    .summary {
+      font-size: 0.92rem;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    /* ── Timeline items ── */
+    .timeline-item {
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-dot-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 0.4rem;
+    }
+    .timeline-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+      box-shadow: 0 0 10px rgba(108,99,255,0.4);
+    }
+    .timeline-line {
+      width: 1px;
+      flex: 1;
+      background: var(--border);
+      margin-top: 0.4rem;
+    }
+    .timeline-content { flex: 1; }
+    .timeline-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+    .timeline-sub {
+      font-size: 0.85rem;
+      color: var(--dim);
+      margin-bottom: 0.5rem;
+    }
+    .timeline-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .timeline-desc ul {
+      padding-left: 1.2rem;
+      margin-top: 0.3rem;
+    }
+    .timeline-desc li { margin-bottom: 0.3rem; }
+
+    /* ── Tags ── */
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+    .tag {
+      padding: 0.25rem 0.7rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(108,99,255,0.1);
+      color: var(--primary);
+      border: 1px solid rgba(108,99,255,0.2);
+    }
+
+    /* ── Skills Grid ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+    .skill-group h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--dim);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── Achievement list ── */
+    .achievement-list { list-style: none; }
+    .achievement-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 0.8rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .achievement-list li i {
+      color: var(--primary);
+      font-size: 0.8rem;
+      margin-top: 0.35rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      body { padding: 1rem; }
+      .header { padding: 2rem 1.5rem; }
+      .header-content { flex-direction: column; text-align: center; }
+      .header-links { justify-content: center; }
+      .resume-body { padding: 1.5rem; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Controls -->
+  <div class="controls no-print">
+    <button class="ctrl-btn primary" onclick="window.print()">
+      <i class="fas fa-download"></i> Download PDF
+    </button>
+    <a href="index.html" class="ctrl-btn secondary">
+      <i class="fas fa-arrow-left"></i> Back to Portfolio
+    </a>
+  </div>
+
+  <!-- Resume -->
+  <div class="resume">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-content">
+        <div class="header-photo">
+          <img src="photo.jpg" alt="Saumay Raj" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-user-astronaut\'></i>';" />
+        </div>
+        <div class="header-info">
+          <h1 class="header-name"><span>Saumay Raj</span></h1>
+          <p class="header-role">Developer &amp; Creator | B.Tech CSE (AI/ML) — RIT Roorkee</p>
+          <div class="header-links">
+            <a href="mailto:saumayraj621@gmail.com" class="header-link">
+              <i class="fas fa-envelope"></i> saumayraj621@gmail.com
+            </a>
+            <a href="tel:+917523821525" class="header-link">
+              <i class="fas fa-phone"></i> +91 7523821525
+            </a>
+            <a href="https://github.com/saumayraj621-sudo" class="header-link" target="_blank">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/saumayraj1" class="header-link" target="_blank">
+              <i class="fab fa-linkedin-in"></i> LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resume-body">
+
+      <!-- Summary -->
+      <div class="section">
+        <h2 class="section-title"><i class="fas fa-user"></i> Summary</h2>
+        <p class="summary">
+          Driven and innovative B.Tech Computer Science student specializing in Artificial Intelligence &amp; Machine Learning at Roorkee Institute of Technology. Passionate about building tools that solve real-world problems — from bill compression utilities to AI-powered virtual assistants. Experienced hackathon competitor with a 3rd place finish in a 24-hour hackathon. Founder of BillSnap, a tool for converting bill images into compressed PDFs.
+        </p>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Education -->
+      <div class="section">
+        <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Education</h2>
+        <div class="timeline-item">
+          <div class="timeline-dot-col">
+            <div class="timeline-dot"></div>
+          </div>
+          <div class="timeline-content">
+            <h3 class="timeline-title">B.Tech in Computer Science & Engineering (AIML)</h3>
+            <p class="timeline-sub">Roorkee Institute of Technology (RIT), Roorkee</p>
+            <p class="timeline-desc">
+              Specialization in Artificial Intelligence &amp; Machine Learning. Pursuing coursework in data structures, algorithms, machine learning, and deep learning.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Projects -->
+      <div class="section">
+        <h2 class="section-title"><i class="fas fa-code-branch"></i> Projects</h2>
+
+        <div class="timeline-item">
+          <div class="timeline-dot-col">
+            <div class="timeline-dot"></div>
+            <div class="timeline-line"></div>
+          </div>
+          <div class="timeline-content">
+            <h3 class="timeline-title">BillSnap <span style="color: var(--dim); font-weight:400; font-size:0.85rem;">— Founder</span></h3>
+            <p class="timeline-sub">
+              <a href="https://github.com/saumayraj621-sudo/BILLSNAP" target="_blank" style="color:var(--primary);">GitHub ↗</a>
+            </p>
+            <div class="timeline-desc">
+              <ul>
+                <li>Built a web tool that converts multiple bill images into a single compressed PDF under 2MB</li>
+                <li>Implemented client-side image compression and PDF generation for fast, offline-ready processing</li>
+                <li>Designed for everyday billing needs — snap photos, auto-compress, and download instantly</li>
+              </ul>
+            </div>
+            <div class="tags">
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+              <span class="tag">JavaScript</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot-col">
+            <div class="timeline-dot"></div>
+          </div>
+          <div class="timeline-content">
+            <h3 class="timeline-title">Friday <span style="color: var(--dim); font-weight:400; font-size:0.85rem;">— AI Virtual Assistant</span></h3>
+            <p class="timeline-sub">
+              <a href="https://github.com/saumayraj621-sudo/friday" target="_blank" style="color:var(--primary);">GitHub ↗</a>
+            </p>
+            <div class="timeline-desc">
+              <ul>
+                <li>Developed an AI-powered virtual assistant inspired by Iron Man's FRIDAY</li>
+                <li>Handles tasks through voice and text commands using Python and AI integrations</li>
+                <li>Integrates speech recognition, text-to-speech, and automation capabilities</li>
+              </ul>
+            </div>
+            <div class="tags">
+              <span class="tag">Python</span>
+              <span class="tag">AI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Skills -->
+      <div class="section">
+        <h2 class="section-title"><i class="fas fa-cogs"></i> Technical Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h4>Languages</h4>
+            <div class="tags">
+              <span class="tag">Python</span>
+              <span class="tag">C</span>
+              <span class="tag">JavaScript</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h4>Frontend</h4>
+            <div class="tags">
+              <span class="tag">HTML5</span>
+              <span class="tag">CSS3</span>
+              <span class="tag">JavaScript</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h4>AI / ML</h4>
+            <div class="tags">
+              <span class="tag">Machine Learning</span>
+              <span class="tag">AI Concepts</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h4>Tools</h4>
+            <div class="tags">
+              <span class="tag">Git</span>
+              <span class="tag">GitHub</span>
+              <span class="tag">VS Code</span>
+              <span class="tag">Linux</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Achievements -->
+      <div class="section">
+        <h2 class="section-title"><i class="fas fa-trophy"></i> Achievements</h2>
+        <ul class="achievement-list">
+          <li>
+            <i class="fas fa-medal"></i>
+            <span><strong>3rd Place</strong> — 24-Hour Hackathon. Built and presented a working project under extreme time constraints.</span>
+          </li>
+          <li>
+            <i class="fas fa-award"></i>
+            <span><strong>Multiple Hackathon Participant</strong> — Active competitor in various hackathons, consistently delivering innovative solutions.</span>
+          </li>
+          <li>
+            <i class="fas fa-rocket"></i>
+            <span><strong>Founder of BillSnap</strong> — Conceived, designed, and built a utility tool used for converting bill images to compressed PDFs.</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

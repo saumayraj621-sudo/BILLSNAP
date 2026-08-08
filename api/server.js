@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 const dns = require('dns');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
 // Fix for Node.js v18+ SRV lookup issue with MongoDB Atlas
 dns.setDefaultResultOrder('ipv4first');
@@ -48,9 +49,33 @@ async function startApp() {
     });
 
     const PORT = process.env.PORT || 5000;
+    // Seed dev user (non-production) after routes are registered and before listening
+    try {
+        await seedDevUser();
+    } catch (err) {
+        console.warn('Seed user error (ignored):', err.message || err);
+    }
+
     app.listen(PORT, () => {
         console.log(`🚀 BillSnap server running on port ${PORT}`);
     });
+}
+
+// Development-only: seed a default user when DB is empty
+async function seedDevUser() {
+    try {
+        if (process.env.NODE_ENV === 'production') return;
+        const User = require('../models/User');
+        const count = await User.countDocuments();
+        if (count === 0) {
+            console.log('🌱 No users found — creating development seed user: dev@local.com / password123');
+            const devUser = new User({ name: 'Dev User', email: 'dev@local.com', password: 'password123' });
+            await devUser.save();
+            console.log('✅ Dev user created');
+        }
+    } catch (err) {
+        console.warn('Seed user creation failed:', err.message || err);
+    }
 }
 
 async function connectMongo(uri, label) {
@@ -73,9 +98,23 @@ async function startServer() {
             }
         }
 
-        console.warn('⚠️  Falling back to local MongoDB at mongodb://localhost:27017/billsnap');
-        await connectMongo(LOCAL_MONGODB_URI, 'local MongoDB');
-        await startApp();
+        // Try local MongoDB next
+        try {
+            console.warn('⚠️  Falling back to local MongoDB at mongodb://localhost:27017/billsnap');
+            await connectMongo(LOCAL_MONGODB_URI, 'local MongoDB');
+            await startApp();
+            return;
+        } catch (localErr) {
+            console.error('❌ Local MongoDB connection failed:', localErr.message || localErr);
+            console.warn('⚠️  Attempting in-memory MongoDB for development...');
+
+            // Start an in-memory MongoDB for quick local development/testing
+            const mongod = await MongoMemoryServer.create();
+            const memUri = mongod.getUri();
+            await connectMongo(memUri, 'in-memory MongoDB');
+            await startApp();
+            return;
+        }
     } catch (err) {
         console.error('❌ MongoDB connection error:', err.message || err);
         process.exit(1);
