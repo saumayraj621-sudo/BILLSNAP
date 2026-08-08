@@ -1,8 +1,8 @@
 # BillSnap
 
-> Convert multiple bill images...
+> Convert multiple bill images into a single compressed PDF under 2MB.
 
-About BillSnap...
+BillSnap is a web application designed to simplify the process of converting multiple bill or receipt images into a single compressed PDF. It helps users organize bills and prepare documents for expense reimbursement and record keeping.
 
 ## ✨ Features
 
