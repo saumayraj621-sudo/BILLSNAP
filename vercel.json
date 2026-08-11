@@ -1,7 +1,7 @@
 {
   "version": 2,
   "buildCommand": "npm install && echo 'Build complete'",
-  "public": true,
+  
   "builds": [
     {
       "src": "api/server.js",
