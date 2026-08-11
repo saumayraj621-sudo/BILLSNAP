@@ -1,25 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm install && echo 'Build complete'",
-  
-  "builds": [
-    {
-      "src": "api/server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "index.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "script.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "style.css",
-      "use": "@vercel/static"
-    }
-  ],
+  "buildCommand": "npm install",
   "routes": [
     {
       "src": "/api/(.*)",
