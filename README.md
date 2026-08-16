@@ -112,3 +112,10 @@ MIT
 
 ## Author
 BillSnap Team
+## 📸 Screenshots
+
+![BILLSNAP Dashboard](dashboard.png)
+
+![BILLSNAP Expense Dashboard](expense%20dashboard.png)
+
+![BILLSNAP Login Page](login%20page.png)
